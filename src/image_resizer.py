@@ -1,14 +1,16 @@
 import os, sys
 import PIL.Image
+import ffmpeg
+import argparse
+import cv2
+import numpy
 
 OUTPUT_SIZE = 128,128
 
 
-def resize(image_path):
-    im = PIL.Image.open(image_path)
-    im.thumbnail(OUTPUT_SIZE)
-    im.save(f"{image_path}.thumbnail.jpg")
+def resize(im):
+    #im = PIL.Image.open(image_path)
+    image = PIL.Image.fromarray(im)
+    image.thumbnail(OUTPUT_SIZE)
+    return numpy.asarray(image)
 
-resize("1.jpg")
-
-    
