@@ -1,6 +1,5 @@
 import os, sys
 import PIL.Image
-import ffmpeg
 import argparse
 import cv2
 import numpy
