@@ -1,0 +1,6 @@
+.DS_Store
+.idea/
+src/.DS_Store
+src/__pycache__/
+venv3/
+~$thon home test.docx
