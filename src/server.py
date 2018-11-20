@@ -19,18 +19,10 @@ class MyService(rpyc.Service):
         # (to finalize the service, if needed)
         pass
 
-    def exposed_get_answer(self): # this is an exposed method
-        return 42
-
-    exposed_the_real_answer_though = 43     # an exposed attribute
-
-    def get_question(self):  # while this method is not exposed
-        return "what is the airspeed velocity of an unladen swallow?"
-
     def exposed_resize(self, received_image_binary):
         received_image = pickle.loads(received_image_binary)
-        size = tuple([l/2 for l in received_image.shape])
-        resized_image = cv2.resize(received_image, dsize=size, interpolation=cv2.INTER_AREA)
+        x,y,z = received_image.shape
+        resized_image = cv2.resize(received_image, dsize=(int(y/2),int(x/2)), interpolation=cv2.INTER_AREA)
         print(f"received image")
         resized_binary = pickle.dumps(resized_image)
         return resized_binary
@@ -45,6 +37,5 @@ if __name__ == "__main__":
     print("starting server")
     t = ThreadedServer(MyService, port=18861)
     t.start()
-    print("running...")
 
 

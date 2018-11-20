@@ -16,6 +16,7 @@ def export_video_frames(filename):
         binary_image = pickle.dumps(image)
         resized_image_binary = remote_connection.root.exposed_resize(binary_image)
         resized_image = pickle.loads(resized_image_binary)
+        cv2.imwrite(f"frames/frame{count}original.jpg", image)
         cv2.imwrite(f"frames/frame{count}.jpg", resized_image)
         print(f"wrote image {count}")
         count += 1
