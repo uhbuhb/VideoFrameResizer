@@ -1,12 +1,9 @@
 import pickle
-import numpy
-import PIL
 import rpyc
 import cv2
 
 
-OUTPUT_SIZE = 128,128
-
+RESIZE_FACTOR = .5
 
 class MyService(rpyc.Service):
     def on_connect(self, conn):
@@ -22,15 +19,10 @@ class MyService(rpyc.Service):
     def exposed_resize(self, received_image_binary):
         received_image = pickle.loads(received_image_binary)
         x,y,z = received_image.shape
-        resized_image = cv2.resize(received_image, dsize=(int(y/2),int(x/2)), interpolation=cv2.INTER_AREA)
+        resized_image = cv2.resize(received_image, dsize=(int(y*RESIZE_FACTOR),int(x*RESIZE_FACTOR)), interpolation=cv2.INTER_AREA)
         print(f"received image")
         resized_binary = pickle.dumps(resized_image)
         return resized_binary
-
-    def resize(im):
-        image = PIL.Image.fromarray(im)
-        image.thumbnail(OUTPUT_SIZE)
-        return numpy.asarray(image)
 
 
 if __name__ == "__main__":
