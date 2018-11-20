@@ -32,6 +32,7 @@ class MyService(rpyc.Service):
         image.thumbnail(OUTPUT_SIZE)
         return numpy.asarray(image)
 
+
 if __name__ == "__main__":
     from rpyc.utils.server import ThreadedServer
     print("starting server")
