@@ -6,7 +6,7 @@ import time
 
 RESIZE_FACTOR = .5
 
-class MyService(rpyc.Service):
+class ResizeService(rpyc.Service):
     def on_connect(self, conn):
         # code that runs when a connection is created
         # (to init the service, if needed)
@@ -33,7 +33,7 @@ class MyService(rpyc.Service):
 if __name__ == "__main__":
     from rpyc.utils.server import ThreadedServer
     print("starting server")
-    t = ThreadedServer(MyService, port=18861)
+    t = ThreadedServer(ResizeService, port=8081)
     t.start()
 
 
