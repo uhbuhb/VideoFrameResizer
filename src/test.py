@@ -13,11 +13,11 @@ def export_resized_video_frames(filename, outfolder, thread_number):
     vidcap = cv2.VideoCapture(filename)
     vidcap_time = time.time() - t
     t = time.time()
-    count = 0
+    count = 1
     tot_resize_time = 0
     success, image = vidcap.read()
     try:
-        os.mkdir(outfolder)
+        os.makedirs(outfolder)
     except FileExistsError as e:
         pass
     print(f"{thread_number}: connection_time: {connection_time*1000}")
@@ -25,7 +25,7 @@ def export_resized_video_frames(filename, outfolder, thread_number):
         binary_image = pickle.dumps(image)
         resized_image_binary = remote_connection.root.exposed_resize(binary_image)
         resized_image = pickle.loads(resized_image_binary)
-        cv2.imwrite(f"/tmp/{outfolder}/Frame{count}.jpg", resized_image)
+        cv2.imwrite(f"{outfolder}/Frame{count:05d}.jpg", resized_image)
         count += 1
         resize_time = time.time() - t
         t = time.time()
@@ -45,8 +45,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     in_filename = args.InVideoFullPath
     threads = []
-    for i in range(int(args.NInstances)):
-        thread = Thread(target=export_resized_video_frames, args=(in_filename, f"vid-instance{i}", i))
+    for i in range(1,int(args.NInstances)+1):
+        thread = Thread(target=export_resized_video_frames, args=(in_filename, f"tmp/vid-instance{i}", i))
         print(f"starting thread{i}")
         thread.start()
         time.sleep(int(args.MDiffSeconds))
